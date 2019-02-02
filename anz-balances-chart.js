@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         [ANZ] Display Total and Sub Total Amount on Home Page
-// @namespace    https://github.com/e10101/anz-online-banking-ui
+// @namespace    http://tampermonkey.net/
 // @version      0.1
 // @description  Tracking Your Money At ANZ.
 // @author       Yishi Guo
@@ -127,9 +127,10 @@
                 type: "total",
                 name: "Total",
                 chartType: 'spline',
+                visible: true,
             });
         };
-        
+
         // ----------------------
         const saveInfoToGM = (info) => {
             const key = `LOG_${info.createdAt}`;
@@ -151,7 +152,7 @@
         //
         const clearDuplicatedValues = () => {
             const list = GM_listValues();
-        
+
             console.log('list', list);
 
             let first = {
@@ -162,14 +163,14 @@
                 key: '',
                 value: '',
             };
-        
+
             list.forEach((key) => {
                 const content = GM_getValue(key);
 
                 console.log('--------key', key);
 
                 const groupStr = JSON.stringify(content.groups);
-        
+
                 // console.log('groupStr', groupStr);
 
                 if (first.value !== groupStr) {
@@ -200,16 +201,16 @@
         //
         const listGMValues = () => {
             const list = GM_listValues();
-        
+
             console.log('list', list);
 
             const results = [];
 
             let fakeOffset = 0;
-        
+
             list.forEach((item) => {
                 const content = GM_getValue(item);
-        
+
                 console.log(item, content, JSON.stringify(content.groups));
 
                 results.push([
@@ -240,6 +241,7 @@
                 const id = group.type;
                 const name = group.name;
                 const chartType = group.chartType;
+                const visible = !!group.visible;
 
                 if (!seriesInfo[id]) {
                     seriesInfo[id] = {
@@ -248,6 +250,8 @@
                         data: [],
                         fakeAmount: 0,
                         type: chartType,
+
+                        visible,
                     }
                 }
             })
@@ -315,7 +319,7 @@
             let max = new Date('2000-01-01');
 
 
-            data.forEach((item) => {         
+            data.forEach((item) => {
                 console.log('item', item, item[0]);
 
                 const createdAt = new Date(item[0]);
@@ -384,7 +388,7 @@
                             const currency = this.value.toLocaleString('nz-NZ', {
                                 'minimumFractionDigits': 2
                             });
-    
+
                             return '$' + currency;
                         },
                         useHTML: true,
