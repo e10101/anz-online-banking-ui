@@ -27,7 +27,6 @@
                 height: 400px;
                 opacity: 1;
             }
-
             #${chartName}.hide-chart {
                 height: 0px;
                 opacity: 0;
@@ -202,6 +201,8 @@
         const listGMValues = () => {
             const list = GM_listValues();
 
+            list.sort();
+
             console.log('list', list);
 
             const results = [];
@@ -302,6 +303,12 @@
             console.log('seriesInfo', seriesInfo);
 
             const series = Object.values(seriesInfo);
+
+            series.forEach((row) => {
+                row.data.sort((a, b) => {
+                    return new Date(a[0]) - new Date(b[0]);
+                });
+            });
 
             console.log('series', series);
 
