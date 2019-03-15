@@ -47,11 +47,15 @@
             let sum = 0;
             $(`.account-group.${group.type} .hidden-sm .account-balance .balance.currency`).each((idx, item) => {
                 const text = $(item).text().trim();
-                const num = text.replace(/[CR$,]+/g, "");
+                const num = text.replace(/[ODCR$,]+/g, "");
 
                 let value = +num;
 
                 if (!group.positive && text.indexOf('CR') === -1) {
+                    value *= -1;
+                }
+
+                if (text.indexOf('OD') >= 0) {
                     value *= -1;
                 }
 
@@ -99,7 +103,12 @@
             <button class="btn btn-link has-icon btn-chevron icon-acc-kiwisaver" id="chartTrigger">Balance Chart</button>
             <!--button class="btn btn-link" id="removeAllData">
 				Clear Data
-			</button-->
+            </button-->
+            <!--
+            <button class="btn btn-link" id="removeLastHourData">
+				Clear Last One Hour Data
+            </button>
+            -->
             </div>`;
             $('h1.page-heading').append(dom);
 
@@ -116,6 +125,9 @@
             });
             $('#removeAllData').on('click', () => {
                 deleteAllValues();
+            });
+            $('#removeLastHourData').on('click', () => {
+                deleteLastHourValues();
             });
         };
 
@@ -146,6 +158,19 @@
                 GM_deleteValue(item);
             });
         };
+
+        const deleteLastHourValues = () => {
+            const list = GM_listValues();
+
+            const oneHourBefore = new Date(Date.now() - 1000 * 60 * 60);
+            list.forEach((item) => {
+                const content = GM_getValue(item);
+                if (content && content.createdAt && new Date(content.createdAt) > oneHourBefore) {
+                    console.log('should remove', content);
+                    GM_deleteValue(item);
+                }
+            });
+        }
 
 
         //
