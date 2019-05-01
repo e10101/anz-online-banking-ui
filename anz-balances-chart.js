@@ -566,7 +566,7 @@
     console.group('LOADING');
     const interval = setInterval(
         function () {
-            const str = $($(".account-term-deposit-info")[0]).text();
+            const str = $($("#account-groups")[0]).text();
 
             if (str) {
                 clearInterval(interval);
