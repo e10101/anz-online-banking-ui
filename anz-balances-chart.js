@@ -516,6 +516,13 @@
                 amount: 0,
                 chartType: 'area',
             },
+            {
+                type: 'pie',
+                name: 'PIE Fund',
+                positive: true,
+                amount: 0,
+                chartType: 'area',
+            },
         ];
 
 
