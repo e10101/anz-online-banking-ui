@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         [ANZ]Term Deposit Progress Bar
-// @namespace    https://github.com/e10101/anz-online-banking-ui
+// @namespace    http://tampermonkey.net/
 // @version      0.1
-// @description  Adding term deposit process bar to the ANZ UI.
+// @description  try to take over the world!
 // @author       You
 // @match        https://*.anz.co.nz/IBCS/service/home
 // @grant        none
@@ -37,6 +37,9 @@
             var remains = days_between(new Date(maturity_date), new Date(now))
 
             var total_days = + $(item).parent().find(".account-description").text().split("days")[0].trim();
+            if (!total_days) {
+                total_days = + $(item).parent().find(".investment-period").text().split("days")[0].trim();
+            }
 
             var new_dom =`<div id="days">
 <span class="remains" style="font-weight: bold;">${total_days - remains}</span>
