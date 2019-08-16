@@ -4,7 +4,7 @@
 // @version      0.1
 // @description  Tracking Your Money At ANZ.
 // @author       Yishi Guo
-// @match        https://secure.anz.co.nz/IBCS/service/home
+// @match        https://*.anz.co.nz/IBCS/service/home
 // @require      https://code.highcharts.com/highcharts.js
 // @grant        GM_listValues
 // @grant        GM_setValue
